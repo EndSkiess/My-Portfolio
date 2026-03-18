@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Portfolio</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="glitch" data-text="PORTFOLIO.SYS">PORTFOLIO.SYS</h1>
+            <p class="subtitle typing-animation">> INITIALIZING SYSTEM...</p>
+        </header>
+
+        <section class="discord-card retro-border">
+            <h2 class="section-title">> USER_IDENTITY</h2>
+            <div class="profile-content" id="discord-profile">
+                <div class="loading blink">Loading profile data...</div>
+            </div>
+            <div class="action-btn-container">
+                <a href="{{ server_invite }}" class="btn-retro" id="join-btn" target="_blank">[ JOIN_SERVER.EXE ]</a>
+            </div>
+        </section>
+
+        <section class="skills-section retro-border">
+            <h2 class="section-title">> CAPABILITIES_LIST</h2>
+            <ul class="skills-list">
+                <li><span class="prompt">root@system:~#</span> PYTHON BACKEND</li>
+                <li><span class="prompt">root@system:~#</span> WEB DEVELOPMENT</li>
+                <li><span class="prompt">root@system:~#</span> BOT CREATION</li>
+                <li><span class="prompt">root@system:~#</span> GRAPHIC DESIGN</li>
+                <li><span class="prompt">root@system:~#</span> SERVER ADMINISTRATION</li>
+            </ul>
+        </section>
+        
+        <footer>
+            <p class="blink-slow">SYSTEM HALTED. END OF FILE.</p>
+        </footer>
+    </div>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

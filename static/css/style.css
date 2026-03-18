@@ -1,0 +1,268 @@
+:root {
+    --bg-color: #0b0c10;
+    --text-primary: #33ff00; /* Terminal green */
+    --text-neon-pink: #ff00ff;
+    --text-neon-cyan: #00ffff;
+    --crt-bg: rgba(18, 16, 16, 0.95);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    overflow-x: hidden;
+}
+
+/* CRT EFFECTS */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    z-index: 998;
+}
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 999;
+    animation: scanlines-anim 10s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes scanlines-anim {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100vh; }
+}
+
+/* LAYOUT */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* TYPOGRAPHY & GLITCH */
+h1, h2 {
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--text-primary);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.glitch {
+    font-size: 2rem;
+    position: relative;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color);
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--text-neon-pink);
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--text-neon-cyan);
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(28px, 9999px, 69px, 0); }
+    20% { clip: rect(51px, 9999px, 9px, 0); }
+    40% { clip: rect(93px, 9999px, 20px, 0); }
+    60% { clip: rect(6px, 9999px, 64px, 0); }
+    80% { clip: rect(81px, 9999px, 32px, 0); }
+    100% { clip: rect(27px, 9999px, 7px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip: rect(31px, 9999px, 83px, 0); }
+    20% { clip: rect(74px, 9999px, 17px, 0); }
+    40% { clip: rect(10px, 9999px, 66px, 0); }
+    60% { clip: rect(92px, 9999px, 47px, 0); }
+    80% { clip: rect(22px, 9999px, 11px, 0); }
+    100% { clip: rect(55px, 9999px, 28px, 0); }
+}
+
+/* TYPING ANIMATION */
+.typing-animation {
+    width: fit-content;
+    margin: 0 auto;
+    border-right: 2px solid var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 2s steps(22, end), blink-caret .5s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--text-primary) }
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+.blink-slow {
+    animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* RETRO BORDERS */
+.retro-border {
+    border: 2px solid var(--text-primary);
+    padding: 20px;
+    box-shadow: 0 0 10px var(--text-primary), inset 0 0 10px var(--text-primary);
+    background-color: rgba(0, 255, 0, 0.05);
+}
+
+.section-title {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    color: var(--text-neon-cyan);
+    text-shadow: 0 0 5px var(--text-neon-cyan);
+}
+
+/* DISCORD PROFILE CARD */
+.profile-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 2px solid var(--text-neon-pink);
+    box-shadow: 0 0 10px var(--text-neon-pink);
+    padding: 4px;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated; /* Retro blocky image look */
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.display-name {
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 0 8px #fff;
+    font-weight: bold;
+}
+
+.username {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.action-btn-container {
+    text-align: right;
+}
+
+/* BUTTONS */
+.btn-retro {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-neon-pink);
+    background: transparent;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--text-neon-pink);
+    transition: all 0.3s ease;
+}
+
+.btn-retro:hover {
+    color: var(--bg-color);
+    background-color: var(--text-neon-pink);
+    box-shadow: 0 0 15px var(--text-neon-pink);
+    text-shadow: none;
+}
+
+/* SKILLS LIST */
+.skills-list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.skills-list li {
+    font-size: 1.5rem;
+    display: flex;
+    gap: 10px;
+}
+
+.prompt {
+    color: var(--text-neon-cyan);
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #555;
+}
