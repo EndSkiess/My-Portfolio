@@ -266,3 +266,130 @@ footer {
     font-size: 1.2rem;
     color: #555;
 }
+
+/* INTRO OVERLAY */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 1s ease-out;
+}
+
+.intro-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scanner-container {
+    text-align: center;
+}
+
+.fingerprint-btn {
+    width: 320px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.fingerprint-btn:active {
+    box-shadow: 0 0 25px var(--text-neon-cyan), inset 0 0 25px var(--text-neon-cyan);
+    border-color: var(--text-neon-cyan);
+}
+
+.fingerprint-btn:active #hold-text {
+    color: var(--text-neon-cyan);
+    text-shadow: 0 0 10px var(--text-neon-cyan);
+    animation: none;
+}
+
+.scan-neon-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-neon-cyan);
+    box-shadow: 0 0 15px var(--text-neon-cyan);
+    opacity: 0;
+}
+
+.fingerprint-btn:active .scan-neon-line {
+    opacity: 1;
+    animation: scan-up-down 2s linear infinite;
+}
+
+@keyframes scan-up-down {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    100% { top: 0%; }
+}
+
+.progress-bar-container {
+    width: 320px;
+    height: 12px;
+    border: 2px solid var(--text-primary);
+    margin: 20px auto;
+}
+
+.progress-bar-container.hidden {
+    display: none;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--text-primary);
+    transition: width 0.05s linear;
+}
+
+.status-msg {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    height: 20px;
+}
+
+.boot-sequence {
+    width: 90%;
+    max-width: 700px;
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+.boot-sequence.hidden {
+    display: none;
+}
+
+.boot-sequence ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.boot-sequence li {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 15px;
+    height: 25px;
+    background-color: var(--text-primary);
+    vertical-align: bottom;
+    margin-left: 5px;
+}
