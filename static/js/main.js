@@ -173,16 +173,16 @@ function typeTitle() {
     const targetText = "WELCOME BACK AGENT-Q";
     let titleIndex = 0;
     
-    titleElement.innerText = " "; // Prevent height collapse 
+    titleElement.textContent = "\u00A0"; // Prevent height collapse 
     titleElement.style.borderRight = "4px solid var(--text-primary)";
     titleElement.style.paddingRight = "5px";
     
     // Animate character by character
     const typeInterval = setInterval(() => {
-        if (titleIndex === 0) titleElement.innerText = ""; // Clear initial space
+        if (titleIndex === 0) titleElement.textContent = ""; // Clear initial space
         
-        titleElement.innerText += targetText[titleIndex];
-        titleElement.setAttribute('data-text', titleElement.innerText); // Update glitch attribute
+        titleElement.textContent += targetText[titleIndex];
+        titleElement.setAttribute('data-text', titleElement.textContent); // Update glitch attribute
         titleIndex++;
         
         if (titleIndex === targetText.length) {

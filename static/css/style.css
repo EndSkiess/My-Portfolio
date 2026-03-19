@@ -79,10 +79,11 @@ header {
 }
 
 .glitch {
-    font-size: 2rem;
+    font-size: clamp(1rem, 5vw, 2rem);
     position: relative;
     color: var(--text-primary);
     margin-bottom: 20px;
+    white-space: nowrap;
 }
 
 .glitch::before, .glitch::after {
