@@ -59,6 +59,7 @@ const HOLD_DURATION = 2000; // Time in milliseconds required to hold
 // Check if already authenticated this session so we don't repeat the intro every refresh
 if (sessionStorage.getItem('authenticated') === 'true') {
     introOverlay.style.display = 'none';
+    typeTitle(); // Start typing right away since intro is skipped
 } else {
     // Hide main scrollbar while in intro
     document.body.style.overflow = 'hidden';
@@ -156,8 +157,38 @@ function runBootSequence() {
                 document.body.style.overflow = 'auto'; // Restore scrolling
                 sessionStorage.setItem('authenticated', 'true');
                 
+                typeTitle(); // Type out the portfolio title when revealing
+                
                 setTimeout(() => introOverlay.remove(), 1000); // Clean up DOM
             }, 1500);
         }
     }, 700); // Delay between each text line
+}
+
+// -----------------------------------------
+// TYPING TITLE LOGIC
+// -----------------------------------------
+function typeTitle() {
+    const titleElement = document.getElementById('main-title');
+    const targetText = "WELCOME BACK AGENT-Q";
+    let titleIndex = 0;
+    
+    titleElement.innerText = " "; // Prevent height collapse 
+    titleElement.style.borderRight = "4px solid var(--text-primary)";
+    titleElement.style.paddingRight = "5px";
+    
+    // Animate character by character
+    const typeInterval = setInterval(() => {
+        if (titleIndex === 0) titleElement.innerText = ""; // Clear initial space
+        
+        titleElement.innerText += targetText[titleIndex];
+        titleElement.setAttribute('data-text', titleElement.innerText); // Update glitch attribute
+        titleIndex++;
+        
+        if (titleIndex === targetText.length) {
+            clearInterval(typeInterval);
+            // Optionally blink the cursor infinitely
+            titleElement.classList.add('blink-slow');
+        }
+    }, 120); // 120ms per character for satisfying retro typing speed
 }
