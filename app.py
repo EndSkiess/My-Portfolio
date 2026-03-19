@@ -17,6 +17,10 @@ DISCORD_SERVER_INVITE = os.getenv("DISCORD_SERVER_INVITE", "#")
 def index():
     return render_template("index.html", server_invite=DISCORD_SERVER_INVITE)
 
+@app.route("/secret")
+def secret():
+    return render_template("secret.html")
+
 @app.route("/api/discord")
 def discord_profile():
     if not DISCORD_BOT_TOKEN or not DISCORD_USER_ID:

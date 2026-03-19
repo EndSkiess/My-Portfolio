@@ -269,6 +269,23 @@ footer {
     color: #555;
 }
 
+/* SECRET BUTTON */
+#secret-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    cursor: crosshair;
+    z-index: 10001; /* Above overlays */
+}
+#secret-btn:hover {
+    background-color: var(--text-neon-pink);
+    opacity: 0.2;
+    box-shadow: 0 0 10px var(--text-neon-pink);
+}
+
 /* RESPONSIVE MOBILE ADJUSTMENTS */
 @media (max-width: 600px) {
     body, html {
