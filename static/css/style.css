@@ -84,6 +84,7 @@ header {
     color: var(--text-primary);
     margin-bottom: 20px;
     white-space: nowrap;
+    display: inline-block;
 }
 
 .glitch::before, .glitch::after {
