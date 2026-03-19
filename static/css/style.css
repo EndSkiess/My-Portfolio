@@ -269,6 +269,53 @@ footer {
     color: #555;
 }
 
+/* RESPONSIVE MOBILE ADJUSTMENTS */
+@media (max-width: 600px) {
+    body, html {
+        font-size: 16px;
+    }
+
+    .container {
+        padding: 20px 15px;
+    }
+
+    .fingerprint-btn, .progress-bar-container {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .profile-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .action-btn-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .display-name {
+        font-size: 1.5rem;
+    }
+
+    .skills-list li {
+        font-size: 1.2rem;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 15px;
+    }
+
+    .boot-sequence {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1rem;
+        text-align: center;
+    }
+}
+
 /* INTRO OVERLAY */
 .intro-overlay {
     position: fixed;
