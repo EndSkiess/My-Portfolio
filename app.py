@@ -58,11 +58,19 @@ def get_random_unused_code():
             else:
                 print(f"Unexpected data type from RavenDB: {type(data)}, value: {data}")
                 return None
-            unused = [entry for entry in codes if isinstance(entry, dict) and not entry.get("used", True)]
+            unused = []
+            for entry in codes:
+                is_dict = isinstance(entry, dict)
+                used = entry.get("used", True) if is_dict else getattr(entry, "used", True)
+                if not used:
+                    unused.append(entry)
+
             print(f"[Codes] Total: {len(codes)}, Unused: {len(unused)}")
             if not unused:
                 return None
-            return random.choice(unused)["code"]
+            
+            selected = random.choice(unused)
+            return selected.get("code") if isinstance(selected, dict) else getattr(selected, "code", None)
     except Exception as e:
         print(f"Error fetching code from DB: {e}")
         return None
