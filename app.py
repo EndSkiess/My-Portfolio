@@ -48,8 +48,18 @@ def get_random_unused_code():
             data = session.load(CODES_DOC_ID)
             if not data:
                 return None
-            codes = data.get("codes", []) if isinstance(data, dict) else []
+            # Handle both plain dict and RavenDB object responses
+            if isinstance(data, dict):
+                codes = data.get("codes", [])
+            elif hasattr(data, 'codes'):
+                codes = data.codes or []
+            elif hasattr(data, 'get'):
+                codes = data.get("codes", [])
+            else:
+                print(f"Unexpected data type from RavenDB: {type(data)}, value: {data}")
+                return None
             unused = [entry for entry in codes if isinstance(entry, dict) and not entry.get("used", True)]
+            print(f"[Codes] Total: {len(codes)}, Unused: {len(unused)}")
             if not unused:
                 return None
             return random.choice(unused)["code"]
