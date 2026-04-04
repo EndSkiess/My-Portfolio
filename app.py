@@ -3,26 +3,60 @@ import requests
 from flask import Flask, render_template, jsonify
 from dotenv import load_dotenv
 import random
-import string
 from ravendb import DocumentStore
 
 # Load environment variables
 load_dotenv()
 
-import json
-
 # Configuration
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_USER_ID = os.getenv("DISCORD_USER_ID")
 DISCORD_SERVER_INVITE = os.getenv("DISCORD_SERVER_INVITE", "#")
-ACTIVE_CODES_FILE = r"C:\Users\USER\Documents\Shizu\cogs\data\active_codes.json"
+
+CODES_DOC_ID = "easteregg/codes"
 
 app = Flask(__name__)
 
-# Configuration
-DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-DISCORD_USER_ID = os.getenv("DISCORD_USER_ID")
-DISCORD_SERVER_INVITE = os.getenv("DISCORD_SERVER_INVITE", "#")
+# RavenDB setup (shared with bot)
+def get_raven_store():
+    urls = os.getenv('RAVEN_URL', 'http://localhost:8080').split(',')
+    database = os.getenv('RAVEN_DATABASE', 'shizu_bot')
+    cert_path = os.getenv('RAVEN_CERT_PATH')
+    store = DocumentStore(urls=urls, database=database)
+    if cert_path and os.path.exists(cert_path):
+        if hasattr(store, 'certificate_pem_path'):
+            store.certificate_pem_path = cert_path
+        else:
+            store.certificate = cert_path
+    store.conventions.disable_topology_updates = True
+    store.initialize()
+    return store
+
+try:
+    raven_store = get_raven_store()
+except Exception as e:
+    print(f"RavenDB connection failed: {e}")
+    raven_store = None
+
+
+def get_random_unused_code():
+    """Pull a random unused code from RavenDB. Returns None if all are used."""
+    if not raven_store:
+        return None
+    try:
+        with raven_store.open_session() as session:
+            data = session.load(CODES_DOC_ID)
+            if not data:
+                return None
+            codes = data.get("codes", []) if isinstance(data, dict) else []
+            unused = [entry for entry in codes if isinstance(entry, dict) and not entry.get("used", True)]
+            if not unused:
+                return None
+            return random.choice(unused)["code"]
+    except Exception as e:
+        print(f"Error fetching code from DB: {e}")
+        return None
+
 
 @app.route("/")
 def index():
@@ -30,26 +64,11 @@ def index():
 
 @app.route("/secret")
 def secret():
-    # Generate a random 3-part code
-    parts = [''.join(random.choices(string.ascii_uppercase + string.digits, k=4)) for _ in range(3)]
-    random_code = "-".join(parts)
-
-    # Save to shared JSON file
-    try:
-        os.makedirs(os.path.dirname(ACTIVE_CODES_FILE), exist_ok=True)
-        codes = []
-        if os.path.exists(ACTIVE_CODES_FILE):
-            with open(ACTIVE_CODES_FILE, "r") as f:
-                codes = json.load(f).get("codes", [])
-        
-        codes.append(random_code)
-        
-        with open(ACTIVE_CODES_FILE, "w") as f:
-            json.dump({"codes": codes}, f)
-    except Exception as e:
-        print(f"Error saving code to JSON: {e}")
-
-    return render_template("secret.html", secret_code=random_code)
+    code = get_random_unused_code()
+    if not code:
+        # Fallback message when all codes are exhausted
+        code = "ALL-CODES-USED"
+    return render_template("secret.html", secret_code=code)
 
 @app.route("/coming-soon")
 def coming_soon():
