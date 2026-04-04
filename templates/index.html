@@ -20,16 +20,23 @@
         <div class="crt-overlay"></div>
         <div class="scanlines"></div>
 
-        <div id="scanner-container" class="scanner-container">
-            <h2 class="section-title glitch" data-text="Restricted Access">Restricted Access</h2>
-            <div id="fingerprint-btn" class="fingerprint-btn retro-border">
-                <p id="hold-text" class="blink-slow">Place fingerprint here<br><br>[ Click and hold ]</p>
-                <div class="scan-neon-line"></div>
+        <div id="cmd-container" class="cmd-window">
+            <div class="cmd-topbar">
+                <span>Command Prompt</span>
+                <span class="cmd-controls">&#x2012; &#x25A1; &#x2715;</span>
             </div>
-            <div class="progress-bar-container hidden" id="scan-progress-container">
-                <div id="scan-progress" class="progress-bar"></div>
+            <div class="cmd-content" id="cmd-content">
+                <p>Microsoft Windows [Version 10.0.26200.7462]</p>
+                <p>(c) Microsoft Corporation. All rights reserved.</p>
+                <br>
+                <p>C:\root\access&gt; portfolio.cmd</p>
+                <p>C:\root\access&gt; This is a restricted access</p>
+                <p>C:\root\access&gt; Do you wish to proceed? (yes/no)</p>
+                <div class="cmd-input-line">
+                    <span>C:\root\access&gt;</span>
+                    <input type="text" id="cmd-input" class="cmd-input" autocomplete="off" autofocus>
+                </div>
             </div>
-            <p id="scan-status" class="status-msg blink-slow">>>> Awaiting authentication <<<</p>
         </div>
 
         <div id="boot-sequence" class="boot-sequence hidden">

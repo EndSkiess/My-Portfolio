@@ -354,79 +354,68 @@ footer {
     pointer-events: none;
 }
 
-.scanner-container {
-    text-align: center;
-}
-
-.fingerprint-btn {
-    width: 320px;
-    height: 200px;
+.cmd-window {
+    width: 650px;
+    max-width: 95vw;
+    background-color: #0c0c0c;
+    border: 1px solid #444;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    z-index: 10001;
+}
+
+.cmd-topbar {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    padding: 6px 12px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin: 30px auto;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    user-select: none;
-    transition: all 0.2s;
+    border-bottom: 1px solid #333;
 }
 
-.fingerprint-btn:active {
-    box-shadow: 0 0 25px var(--text-neon-cyan), inset 0 0 25px var(--text-neon-cyan);
-    border-color: var(--text-neon-cyan);
+.cmd-controls {
+    letter-spacing: 12px;
+    color: #999;
 }
 
-.fingerprint-btn:active #hold-text {
-    color: var(--text-neon-cyan);
-    text-shadow: 0 0 10px var(--text-neon-cyan);
-    animation: none;
-}
-
-.scan-neon-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--text-neon-cyan);
-    box-shadow: 0 0 15px var(--text-neon-cyan);
-    opacity: 0;
-}
-
-.fingerprint-btn:active .scan-neon-line {
-    opacity: 1;
-    animation: scan-up-down 2s linear infinite;
-}
-
-@keyframes scan-up-down {
-    0% { top: 0%; }
-    50% { top: 100%; }
-    100% { top: 0%; }
-}
-
-.progress-bar-container {
-    width: 320px;
-    height: 12px;
-    border: 2px solid var(--text-primary);
-    margin: 20px auto;
-}
-
-.progress-bar-container.hidden {
-    display: none;
-}
-
-.progress-bar {
-    width: 0%;
-    height: 100%;
-    background-color: var(--text-primary);
-    transition: width 0.05s linear;
-}
-
-.status-msg {
-    margin-top: 15px;
+.cmd-content {
+    padding: 15px;
+    text-align: left;
+    color: #cccccc;
+    font-family: 'Consolas', 'Courier New', monospace;
     font-size: 14px;
-    height: 20px;
+    min-height: 350px;
+    overflow-y: auto;
+}
+
+.cmd-content p {
+    margin-bottom: 5px;
+}
+
+.cmd-input-line {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.cmd-input {
+    background: transparent;
+    border: none;
+    color: #cccccc;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    flex-grow: 1;
+    margin-left: 5px;
+}
+
+.error-text {
+    color: #ff5555;
+    margin-top: 10px;
 }
 
 .boot-sequence {

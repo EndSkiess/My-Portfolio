@@ -51,6 +51,10 @@ def secret():
 
     return render_template("secret.html", secret_code=random_code)
 
+@app.route("/coming-soon")
+def coming_soon():
+    return render_template("coming_soon.html")
+
 @app.route("/api/discord")
 def discord_profile():
     if not DISCORD_BOT_TOKEN or not DISCORD_USER_ID:

@@ -43,90 +43,71 @@ function renderProfile(container, data) {
 // -----------------------------------------
 // INTRO SEQUENCE LOGIC
 // -----------------------------------------
+// -----------------------------------------
+// INTRO SEQUENCE LOGIC
+// -----------------------------------------
 const introOverlay = document.getElementById('intro-overlay');
-const scannerContainer = document.getElementById('scanner-container');
-const fingerprintBtn = document.getElementById('fingerprint-btn');
-const progressContainer = document.getElementById('scan-progress-container');
-const progressBar = document.getElementById('scan-progress');
-const scanStatus = document.getElementById('scan-status');
+const cmdContainer = document.getElementById('cmd-container');
+const cmdInput = document.getElementById('cmd-input');
+const cmdContent = document.getElementById('cmd-content');
 const bootSequence = document.getElementById('boot-sequence');
 const bootLog = document.getElementById('boot-log');
 
-let holdTimer;
-let holdProgress = 0;
-const HOLD_DURATION = 2000; // Time in milliseconds required to hold
-
-// Check if already authenticated this session so we don't repeat the intro every refresh
+// Check if already authenticated this session
 if (sessionStorage.getItem('authenticated') === 'true') {
     introOverlay.style.display = 'none';
     typeTitle(); // Start typing right away since intro is skipped
 } else {
     // Hide main scrollbar while in intro
     document.body.style.overflow = 'hidden';
-}
-
-function startScanning(e) {
-    if (e.type === 'touchstart') e.preventDefault();
-    holdProgress = 0;
-    scanStatus.innerText = "> Scanning biometrics...";
-    scanStatus.classList.remove('blink-slow');
-    progressContainer.classList.remove('hidden');
-    progressBar.style.width = '0%';
-    progressBar.style.backgroundColor = 'var(--text-neon-cyan)';
-    
-    const intervalTime = 50; 
-    
-    holdTimer = setInterval(() => {
-        holdProgress += intervalTime;
-        const width = (holdProgress / HOLD_DURATION) * 100;
-        progressBar.style.width = `${width}%`;
+    if (cmdInput) {
+        cmdInput.focus();
         
-        if (holdProgress >= HOLD_DURATION) {
-            clearInterval(holdTimer);
-            handleSuccess();
-        }
-    }, intervalTime);
-}
-
-function stopScanning(e) {
-    if (e.type === 'touchend') e.preventDefault();
-    if (holdProgress < HOLD_DURATION) {
-        clearInterval(holdTimer);
-        progressBar.style.width = '0%';
-        progressContainer.classList.add('hidden');
-        scanStatus.innerText = "> Authentication failed. Hold longer.";
-        scanStatus.style.color = "var(--text-neon-pink)";
-        
-        setTimeout(() => {
-            if (scanStatus.innerText.includes("failed")) {
-                scanStatus.innerText = ">>> Awaiting authentication <<<";
-                scanStatus.style.color = "var(--text-primary)";
-                scanStatus.classList.add('blink-slow');
+        // Ensure input stays focused if user clicks anywhere inside the terminal
+        document.addEventListener('click', (e) => {
+            if (introOverlay && introOverlay.style.display !== 'none') {
+                 cmdInput.focus();
             }
-        }, 2000);
+        });
+
+        cmdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const val = this.value.trim().toLowerCase();
+                
+                // Echo the command visually
+                const echoLine = document.createElement('p');
+                echoLine.textContent = `C:\\root\\access> ${this.value}`;
+                cmdContent.insertBefore(echoLine, cmdInput.parentElement);
+                
+                this.value = ''; // clear input
+
+                if (val === 'yes') {
+                    handleSuccess();
+                } else if (val === 'no') {
+                    // Navigate to the coming soon page
+                    window.location.href = '/coming-soon';
+                } else {
+                    const errorMsg = document.createElement('p');
+                    errorMsg.className = 'error-text';
+                    errorMsg.textContent = `'${val}' is not recognized. Please type 'yes' or 'no'.`;
+                    cmdContent.insertBefore(errorMsg, cmdInput.parentElement);
+                    cmdContent.scrollTop = cmdContent.scrollHeight;
+                }
+            }
+        });
     }
 }
 
-// Event listeners for holding the button
-fingerprintBtn.addEventListener('mousedown', startScanning);
-fingerprintBtn.addEventListener('mouseup', stopScanning);
-fingerprintBtn.addEventListener('mouseleave', stopScanning);
-fingerprintBtn.addEventListener('touchstart', startScanning);
-fingerprintBtn.addEventListener('touchend', stopScanning);
-
 function handleSuccess() {
-    scanStatus.innerText = "> Access granted";
-    scanStatus.style.color = "var(--text-primary)";
-    progressBar.style.backgroundColor = "var(--text-primary)";
+    // Disable input
+    cmdInput.disabled = true;
     
-    // Disable hovering/clicking again
-    fingerprintBtn.style.pointerEvents = 'none';
-    
+    // Quick pause then start real boot sequence
     setTimeout(() => {
-        scannerContainer.style.display = 'none';
+        cmdContainer.style.display = 'none';
         bootSequence.classList.remove('hidden');
         runBootSequence();
-    }, 1500);
+    }, 800);
 }
 
 const bootLines = [
