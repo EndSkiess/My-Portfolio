@@ -3,6 +3,8 @@ import requests
 from flask import Flask, render_template, jsonify
 from dotenv import load_dotenv
 import random
+import base64
+import tempfile
 from ravendb import DocumentStore
 
 # Load environment variables
@@ -22,12 +24,26 @@ def get_raven_store():
     urls = os.getenv('RAVEN_URL', 'http://localhost:8080').split(',')
     database = os.getenv('RAVEN_DATABASE', 'shizu_bot')
     cert_path = os.getenv('RAVEN_CERT_PATH')
+    cert_base64 = os.getenv('RAVEN_CERT_CONTENT')
+
+    if cert_base64:
+        try:
+            # Render/Cloud optimization: Write base64 cert to temporary file
+            temp_cert = tempfile.NamedTemporaryFile(delete=False, suffix=".pem")
+            temp_cert.write(base64.b64decode(cert_base64))
+            temp_cert.close()
+            cert_path = temp_cert.name
+            print(f"Loaded certificate from environment variable into {cert_path}")
+        except Exception as e:
+            print(f"Failed to decode RAVEN_CERT_CONTENT: {e}")
+
     store = DocumentStore(urls=urls, database=database)
     if cert_path and os.path.exists(cert_path):
         if hasattr(store, 'certificate_pem_path'):
             store.certificate_pem_path = cert_path
         else:
             store.certificate = cert_path
+    
     store.conventions.disable_topology_updates = True
     store.initialize()
     return store
