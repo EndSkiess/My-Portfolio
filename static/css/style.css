@@ -17,8 +17,8 @@ body, html {
     margin: 0;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    font-family: 'VT323', monospace;
-    font-size: 24px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
     overflow-x: hidden;
 }
 
@@ -68,8 +68,8 @@ body, html {
 
 /* TYPOGRAPHY & GLITCH */
 h1, h2 {
-    font-family: 'Press Start 2P', cursive;
-    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
     text-shadow: 0 0 10px var(--text-primary);
 }
 
@@ -170,7 +170,7 @@ header {
 }
 
 .section-title {
-    font-size: 1.2rem;
+    font-size: 18px;
     margin-bottom: 25px;
     color: var(--text-neon-cyan);
     text-shadow: 0 0 5px var(--text-neon-cyan);
@@ -207,7 +207,7 @@ header {
 }
 
 .display-name {
-    font-size: 2rem;
+    font-size: 20px;
     color: #fff;
     text-shadow: 0 0 8px #fff;
     font-weight: bold;
@@ -225,12 +225,12 @@ header {
 /* BUTTONS */
 .btn-retro {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 8px 16px;
     text-decoration: none;
     color: var(--text-neon-pink);
     background: transparent;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.8rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
     border: none;
     cursor: pointer;
     text-shadow: 0 0 5px var(--text-neon-pink);
@@ -253,7 +253,7 @@ header {
 }
 
 .skills-list li {
-    font-size: 1.5rem;
+    font-size: 14px;
     display: flex;
     gap: 10px;
 }
@@ -265,7 +265,7 @@ header {
 footer {
     text-align: center;
     margin-top: 20px;
-    font-size: 1.2rem;
+    font-size: 14px;
     color: #555;
 }
 
@@ -425,7 +425,7 @@ footer {
 
 .status-msg {
     margin-top: 15px;
-    font-size: 1.2rem;
+    font-size: 14px;
     height: 20px;
 }
 
@@ -433,7 +433,7 @@ footer {
     width: 90%;
     max-width: 700px;
     text-align: left;
-    font-size: 1.5rem;
+    font-size: 14px;
 }
 
 .boot-sequence.hidden {

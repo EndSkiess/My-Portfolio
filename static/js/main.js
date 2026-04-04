@@ -68,7 +68,7 @@ if (sessionStorage.getItem('authenticated') === 'true') {
 function startScanning(e) {
     if (e.type === 'touchstart') e.preventDefault();
     holdProgress = 0;
-    scanStatus.innerText = "> SCANNING BIOMETRICS...";
+    scanStatus.innerText = "> Scanning biometrics...";
     scanStatus.classList.remove('blink-slow');
     progressContainer.classList.remove('hidden');
     progressBar.style.width = '0%';
@@ -94,12 +94,12 @@ function stopScanning(e) {
         clearInterval(holdTimer);
         progressBar.style.width = '0%';
         progressContainer.classList.add('hidden');
-        scanStatus.innerText = "> AUTHENTICATION FAILED. HOLD LONGER.";
+        scanStatus.innerText = "> Authentication failed. Hold longer.";
         scanStatus.style.color = "var(--text-neon-pink)";
         
         setTimeout(() => {
-            if (scanStatus.innerText.includes("FAILED")) {
-                scanStatus.innerText = ">>> AWAITING AUTHENTICATION <<<";
+            if (scanStatus.innerText.includes("failed")) {
+                scanStatus.innerText = ">>> Awaiting authentication <<<";
                 scanStatus.style.color = "var(--text-primary)";
                 scanStatus.classList.add('blink-slow');
             }
@@ -115,7 +115,7 @@ fingerprintBtn.addEventListener('touchstart', startScanning);
 fingerprintBtn.addEventListener('touchend', stopScanning);
 
 function handleSuccess() {
-    scanStatus.innerText = "> ACCESS GRANTED";
+    scanStatus.innerText = "> Access granted";
     scanStatus.style.color = "var(--text-primary)";
     progressBar.style.backgroundColor = "var(--text-primary)";
     
@@ -130,11 +130,11 @@ function handleSuccess() {
 }
 
 const bootLines = [
-    "> ESTABLISHING SECURE CONNECTION...",
-    "> DECRYPTING USER DATABANKS (RSA-4096)...",
-    "> LOADING PORTFOLIO.SYS...",
-    "> BYPASSING MAINFRAME FIREWALL...",
-    "> SYSTEM READY."
+    "> Establishing secure connection...",
+    "> Decrypting user databanks (RSA-4096)...",
+    "> Loading portfolio.sys...",
+    "> Bypassing mainframe firewall...",
+    "> System ready."
 ];
 
 function runBootSequence() {
@@ -170,7 +170,7 @@ function runBootSequence() {
 // -----------------------------------------
 function typeTitle() {
     const titleElement = document.getElementById('main-title');
-    const targetText = "WELCOME BACK AGENT-Q";
+    const targetText = "Welcome back Agent-Q";
     let titleIndex = 0;
     
     titleElement.textContent = "\u00A0"; // Prevent height collapse 
