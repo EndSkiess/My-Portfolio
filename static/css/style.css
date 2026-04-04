@@ -1,8 +1,8 @@
 :root {
-    --bg-color: #0b0c10;
-    --text-primary: #33ff00; /* Terminal green */
-    --text-neon-pink: #ff00ff;
-    --text-neon-cyan: #00ffff;
+    --bg-color: #000000;
+    --text-primary: #00ff00; /* Terminal green */
+    --text-neon-pink: #9900ff;
+    --text-neon-cyan: #ffffff;
     --crt-bg: rgba(18, 16, 16, 0.95);
 }
 
@@ -459,3 +459,15 @@ footer {
     vertical-align: bottom;
     margin-left: 5px;
 }
+
+/* MATRIX CANVAS */
+.matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+

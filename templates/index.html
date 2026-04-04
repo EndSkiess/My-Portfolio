@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <canvas id="matrix-canvas" class="matrix-canvas"></canvas>
     <div id="intro-overlay" class="intro-overlay">
         <!-- We keep crt effects over the intro too -->
         <div class="crt-overlay"></div>
@@ -77,6 +78,7 @@
     <a href="/secret" id="secret-btn" title="???"></a>
 
     <!-- JS -->
+    <script src="{{ url_for('static', filename='js/matrix.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
