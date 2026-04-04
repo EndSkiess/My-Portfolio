@@ -179,5 +179,27 @@ def discord_profile():
         print(f"Error fetching Discord user: {e}")
         return jsonify({"error": "Failed to fetch Discord profile"}), 500
 
+@app.route("/api/health")
+def health():
+    status = {
+        "ravendb_store": raven_store is not None,
+        "cert_loaded": False,
+        "cert_env_present": os.getenv('RAVEN_CERT_CONTENT') is not None,
+        "database": os.getenv('RAVEN_DATABASE', 'shizu_bot'),
+        "url": os.getenv('RAVEN_URL', 'http://localhost:8080')
+    }
+    
+    if raven_store:
+        try:
+            with raven_store.open_session() as session:
+                data = session.load(CODES_DOC_ID)
+                status["db_reachable"] = True
+                status["codes_count"] = len(data.get("codes", [])) if isinstance(data, dict) else 0
+        except Exception as e:
+            status["db_reachable"] = False
+            status["error"] = str(e)
+            
+    return jsonify(status)
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
