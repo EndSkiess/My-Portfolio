@@ -40,18 +40,19 @@ body, html {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 200vh;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
     background-size: 100% 4px;
     pointer-events: none;
     z-index: 999;
     animation: scanlines-anim 10s linear infinite;
+    will-change: transform;
     opacity: 0.3;
 }
 
 @keyframes scanlines-anim {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 100vh; }
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50vh); }
 }
 
 /* LAYOUT */
@@ -482,5 +483,17 @@ footer {
     height: 100vh;
     z-index: 0;
     pointer-events: none;
+}
+
+/* LOW-END & REDUCED MOTION OPTIMIZATIONS */
+@media (prefers-reduced-motion: reduce), (max-width: 600px) {
+    .scanlines {
+        animation: none;
+        opacity: 0.15;
+    }
+    
+    .glitch::before, .glitch::after {
+        animation-duration: 6s; /* Throttle layout recalculations */
+    }
 }
 

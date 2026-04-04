@@ -12,7 +12,9 @@ if (canvas) {
     resizeCanvas();
 
     const chars = '01'; // Binary code only
-    const fontSize = 16;
+    
+    // Low-end optimization: double chunk size on small screens
+    const fontSize = window.innerWidth < 600 ? 24 : 16;
     let columns = Math.floor(canvas.width / fontSize);
     let drops = [];
 
@@ -40,7 +42,16 @@ if (canvas) {
         '#9900ff'  // Purple
     ];
 
-    function draw() {
+    let lastTime = 0;
+    const fpsInterval = 60; // Slightly lower rendering rate for performance
+
+    function draw(timestamp) {
+        // Throttle to target FPS
+        if (timestamp - lastTime < fpsInterval) {
+            requestAnimationFrame(draw);
+            return;
+        }
+        lastTime = timestamp;
         // Semi-transparent true black background to create the fading trail effect
         ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -65,8 +76,10 @@ if (canvas) {
             // Move drop down
             drops[i]++;
         }
+        
+        requestAnimationFrame(draw);
     }
 
     // Run animation
-    setInterval(draw, 50);
+    requestAnimationFrame(draw);
 }
