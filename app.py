@@ -2,9 +2,20 @@ import os
 import requests
 from flask import Flask, render_template, jsonify
 from dotenv import load_dotenv
+import random
+import string
+from ravendb import DocumentStore
 
 # Load environment variables
 load_dotenv()
+
+import json
+
+# Configuration
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+DISCORD_USER_ID = os.getenv("DISCORD_USER_ID")
+DISCORD_SERVER_INVITE = os.getenv("DISCORD_SERVER_INVITE", "#")
+ACTIVE_CODES_FILE = r"C:\Users\USER\Documents\Shizu\cogs\data\active_codes.json"
 
 app = Flask(__name__)
 
@@ -19,7 +30,26 @@ def index():
 
 @app.route("/secret")
 def secret():
-    return render_template("secret.html")
+    # Generate a random 3-part code
+    parts = [''.join(random.choices(string.ascii_uppercase + string.digits, k=4)) for _ in range(3)]
+    random_code = "-".join(parts)
+
+    # Save to shared JSON file
+    try:
+        os.makedirs(os.path.dirname(ACTIVE_CODES_FILE), exist_ok=True)
+        codes = []
+        if os.path.exists(ACTIVE_CODES_FILE):
+            with open(ACTIVE_CODES_FILE, "r") as f:
+                codes = json.load(f).get("codes", [])
+        
+        codes.append(random_code)
+        
+        with open(ACTIVE_CODES_FILE, "w") as f:
+            json.dump({"codes": codes}, f)
+    except Exception as e:
+        print(f"Error saving code to JSON: {e}")
+
+    return render_template("secret.html", secret_code=random_code)
 
 @app.route("/api/discord")
 def discord_profile():
