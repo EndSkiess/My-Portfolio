@@ -3,6 +3,7 @@ import requests
 from flask import Flask, render_template, jsonify
 from dotenv import load_dotenv
 import random
+import string
 import base64
 import tempfile
 from ravendb import DocumentStore
@@ -98,10 +99,11 @@ def index():
 
 @app.route("/secret")
 def secret():
-    code = get_random_unused_code()
-    if not code:
-        # Fallback message when all codes are exhausted
-        code = "ALL-CODES-USED"
+    # Pure random generation for reliability across all hosting (including Render)
+    def make_part():
+        return ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    
+    code = f"SKIES-{make_part()}-{make_part()}-{make_part()}"
     return render_template("secret.html", secret_code=code)
 
 @app.route("/coming-soon")
