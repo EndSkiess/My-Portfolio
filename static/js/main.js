@@ -76,7 +76,7 @@ if (sessionStorage.getItem('authenticated') === 'true') {
                 
                 // Echo the command visually
                 const echoLine = document.createElement('p');
-                echoLine.textContent = `C:\\root\\access> ${this.value}`;
+                echoLine.innerHTML = `<span class="prompt-user">guest@skies</span>:<span class="prompt-dir">~</span>$ ${this.value}`;
                 cmdContent.insertBefore(echoLine, cmdInput.parentElement);
                 
                 this.value = ''; // clear input

@@ -22,18 +22,22 @@
 
         <div id="cmd-container" class="cmd-window">
             <div class="cmd-topbar">
-                <span>Command Prompt</span>
-                <span class="cmd-controls">&#x2012; &#x25A1; &#x2715;</span>
+                <span class="linux-controls">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </span>
+                <span class="title" style="margin-left: -50px;">guest@skies: ~</span>
+                <span style="width: 50px;"></span> 
             </div>
             <div class="cmd-content" id="cmd-content">
-                <p>Microsoft Windows [Version 10.0.26200.7462]</p>
-                <p>(c) Microsoft Corporation. All rights reserved.</p>
+                <p>Welcome to SkiesOS 1.0.0 LTS (GNU/Linux 6.2.0-generic x86_64)</p>
+                <p> * Documentation:  https://help.skies.com</p>
+                <p> * Security:       RESTRICTED ACCESS</p>
                 <br>
-                <p>C:\root\access&gt; portfolio.cmd</p>
-                <p>C:\root\access&gt; This is a restricted access</p>
-                <p>C:\root\access&gt; Do you wish to proceed? (yes/no)</p>
+                <p><span class="prompt-user">guest@skies</span>:<span class="prompt-dir">~</span>$ ./portfolio.sh</p>
+                <p><span class="prompt-user">guest@skies</span>:<span class="prompt-dir">~</span>$ WARNING: Restricted access.</p>
+                <p><span class="prompt-user">guest@skies</span>:<span class="prompt-dir">~</span>$ Do you wish to proceed? (yes/no)</p>
                 <div class="cmd-input-line">
-                    <span>C:\root\access&gt;</span>
+                    <span style="margin-right: 5px;"><span class="prompt-user">guest@skies</span>:<span class="prompt-dir">~</span>$ </span>
                     <input type="text" id="cmd-input" class="cmd-input" autocomplete="off" autofocus>
                 </div>
             </div>
