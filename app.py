@@ -57,24 +57,28 @@ except Exception as e:
 
 
 def get_random_unused_code():
-    """Pull a random unused code from RavenDB. Returns None if all are used."""
+    """Pull a random unused code from RavenDB. Returns a fresh random one and seeds DB if all are used."""
     if not raven_store:
-        return None
+        # Fallback to local only generation if DB is offline
+        def make_part():
+            return ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        return f"SKIES-{make_part()}-{make_part()}-{make_part()}"
+
     try:
         with raven_store.open_session() as session:
             data = session.load(CODES_DOC_ID)
+            
+            # Extract codes list from session data
             if not data:
-                return None
-            # Handle both plain dict and RavenDB object responses
-            if isinstance(data, dict):
+                codes = []
+            elif isinstance(data, dict):
                 codes = data.get("codes", [])
             elif hasattr(data, 'codes'):
                 codes = data.codes or []
-            elif hasattr(data, 'get'):
-                codes = data.get("codes", [])
             else:
-                print(f"Unexpected data type from RavenDB: {type(data)}, value: {data}")
-                return None
+                codes = []
+
+            # Filter for unused codes
             unused = []
             for entry in codes:
                 is_dict = isinstance(entry, dict)
@@ -83,14 +87,41 @@ def get_random_unused_code():
                     unused.append(entry)
 
             print(f"[Codes] Total: {len(codes)}, Unused: {len(unused)}")
-            if not unused:
-                return None
             
-            selected = random.choice(unused)
-            return selected.get("code") if isinstance(selected, dict) else getattr(selected, "code", None)
+            # If we have unused codes, return a random one
+            if unused:
+                selected = random.choice(unused)
+                return selected.get("code") if isinstance(selected, dict) else getattr(selected, "code", None)
+
+            # If pool is empty, generate and seed a new batch of 20
+            from ravendb import PatchOperation, PatchRequest
+            
+            new_batch = []
+            def make_code():
+                p = lambda: ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+                return f"SKIES-{p()}-{p()}-{p()}"
+            
+            for _ in range(20):
+                new_batch.append({"code": make_code(), "used": False})
+            
+            if not data:
+                # Create the document if it's completely missing
+                session.store({"codes": new_batch}, CODES_DOC_ID)
+                session.save_changes()
+            else:
+                # Patch into the existing array for performance
+                script = "for (var i = 0; i < $newCodes.length; i++) { this.codes.push($newCodes[i]); }"
+                patch_req = PatchRequest(script=script, values={"newCodes": new_batch})
+                raven_store.operations.send(PatchOperation(key=CODES_DOC_ID, change_vector=None, patch=patch_req))
+            
+            print(f"[Codes] Seeded 20 new codes to RavenDB.")
+            return new_batch[0]["code"]
+
     except Exception as e:
-        print(f"Error fetching code from DB: {e}")
-        return None
+        print(f"Error sync with RavenDB: {e}")
+        # Always return a valid looking code as ultimate fallback
+        p = lambda: ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        return f"SKIES-{p()}-{p()}-{p()}"
 
 
 @app.route("/")
@@ -99,11 +130,8 @@ def index():
 
 @app.route("/secret")
 def secret():
-    # Pure random generation for reliability across all hosting (including Render)
-    def make_part():
-        return ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    
-    code = f"SKIES-{make_part()}-{make_part()}-{make_part()}"
+    # Sync with RavenDB so the Discord bot can recognize the codes
+    code = get_random_unused_code()
     return render_template("secret.html", secret_code=code)
 
 @app.route("/coming-soon")
