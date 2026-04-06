@@ -497,3 +497,50 @@ footer {
     }
 }
 
+/* ANIMATION TOGGLE STYLES */
+.anim-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10002;
+}
+
+.anim-btn {
+    font-size: 12px !important;
+    color: var(--text-primary) !important;
+    text-shadow: 0 0 8px var(--text-primary) !important;
+    background: rgba(0, 255, 0, 0.1) !important;
+    border: 1px solid var(--text-primary) !important;
+    padding: 6px 12px;
+}
+
+.anim-btn:hover {
+    box-shadow: 0 0 15px var(--text-primary);
+    background: var(--text-primary) !important;
+    color: var(--bg-color) !important;
+}
+
+/* GLOBAL OVERRIDES WHEN ANIMATIONS ARE DISABLED */
+.animations-disabled .scanlines {
+    animation: none !important;
+}
+
+.animations-disabled .glitch::before,
+.animations-disabled .glitch::after {
+    animation: none !important;
+    display: none;
+}
+
+.animations-disabled .typing-animation {
+    animation: none !important;
+    width: auto !important;
+    border-right: none !important;
+}
+
+.animations-disabled .blink,
+.animations-disabled .blink-slow,
+.animations-disabled .typing-cursor {
+    animation: none !important;
+    opacity: 1 !important;
+}
+

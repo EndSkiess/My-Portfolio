@@ -45,6 +45,16 @@ if (canvas) {
     let lastTime = 0;
     const fpsInterval = 60; // Slightly lower rendering rate for performance
 
+    let animationsDisabled = document.body.classList.contains('animations-disabled');
+    window.addEventListener('animationStateChanged', (e) => {
+        animationsDisabled = e.detail.disabled;
+        if (animationsDisabled) {
+            // Fill background once when entering static mode to clear any trails
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+    });
+
     function draw(timestamp) {
         // Throttle to target FPS
         if (timestamp - lastTime < fpsInterval) {
@@ -52,7 +62,35 @@ if (canvas) {
             return;
         }
         lastTime = timestamp;
-        // Semi-transparent true black background to create the fading trail effect
+
+        if (animationsDisabled) {
+            // STATIC FLIP MODE: 
+            // Don't clear with trails, just randomly flip characters in place
+            ctx.font = fontSize + 'px "VT323", monospace';
+            
+            // Randomly update about 2% of the possible positions on screen
+            const rows = Math.floor(canvas.height / fontSize) + 1;
+            const cellsToUpdate = Math.floor(columns * rows * 0.02);
+            
+            for (let j = 0; j < cellsToUpdate; j++) {
+                const x = Math.floor(Math.random() * columns);
+                const y = Math.floor(Math.random() * rows);
+                
+                // Clear the specific cell to avoid overlap artifacts
+                ctx.fillStyle = '#000';
+                ctx.fillRect(x * fontSize, (y - 1) * fontSize, fontSize, fontSize);
+                
+                // Draw a fresh random character
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                ctx.fillText(text, x * fontSize, y * fontSize);
+            }
+            
+            requestAnimationFrame(draw);
+            return;
+        }
+
+        // RAIN MODE: Semi-transparent true black background to create the fading trail effect
         ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 

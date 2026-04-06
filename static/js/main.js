@@ -173,3 +173,29 @@ function typeTitle() {
         }
     }, 120); // 120ms per character for satisfying retro typing speed
 }
+
+// -----------------------------------------
+// ANIMATION TOGGLE LOGIC
+// -----------------------------------------
+const animToggle = document.getElementById('anim-toggle');
+const body = document.body;
+
+// Initialize from localStorage
+const storedState = localStorage.getItem('animations-disabled');
+if (storedState === 'true') {
+    body.classList.add('animations-disabled');
+    if (animToggle) animToggle.textContent = '[ ANIMATIONS: OFF ]';
+}
+
+if (animToggle) {
+    animToggle.addEventListener('click', () => {
+        const isDisabled = body.classList.toggle('animations-disabled');
+        localStorage.setItem('animations-disabled', isDisabled);
+        animToggle.textContent = isDisabled ? '[ ANIMATIONS: OFF ]' : '[ ANIMATIONS: ON ]';
+        
+        // Dispatch custom event to notify matrix.js
+        window.dispatchEvent(new CustomEvent('animationStateChanged', { 
+            detail: { disabled: isDisabled } 
+        }));
+    });
+}
