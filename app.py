@@ -15,6 +15,8 @@ load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_USER_ID = os.getenv("DISCORD_USER_ID")
 DISCORD_SERVER_INVITE = os.getenv("DISCORD_SERVER_INVITE", "#")
+GOOGLE_ADSENSE_ID = os.getenv("GOOGLE_ADSENSE_ID")
+
 
 CODES_DOC_ID = "easteregg/codes"
 
@@ -179,7 +181,16 @@ def discord_profile():
         print(f"Error fetching Discord user: {e}")
         return jsonify({"error": "Failed to fetch Discord profile"}), 500
 
+@app.route("/ads.txt")
+def ads_txt():
+    return app.send_static_file("ads.txt")
+
+@app.context_processor
+def inject_adsense():
+    return dict(adsense_id=GOOGLE_ADSENSE_ID)
+
 @app.route("/api/health")
+
 def health():
     status = {
         "ravendb_store": raven_store is not None,

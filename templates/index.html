@@ -1,22 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Portfolio</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-
-<body>
-    <canvas id="matrix-canvas" class="matrix-canvas"></canvas>
+{% block content %}
     <div id="intro-overlay" class="intro-overlay">
-        <!-- We keep crt effects over the intro too -->
         <div class="crt-overlay"></div>
         <div class="scanlines"></div>
 
@@ -49,52 +34,29 @@
         </div>
     </div>
 
-    <!-- Main site crt effects -->
-    <div class="crt-overlay"></div>
-    <div class="scanlines"></div>
+    <header>
+        <h1 class="glitch" id="main-title" data-text=""></h1>
+        <p class="subtitle typing-animation">> Initializing system...</p>
+    </header>
 
-    <div class="container">
-        <header>
-            <h1 class="glitch" id="main-title" data-text=""></h1>
-            <p class="subtitle typing-animation">> Initializing system...</p>
-        </header>
+    <section class="discord-card retro-border">
+        <h2 class="section-title">> User Identity</h2>
+        <div class="profile-content" id="discord-profile">
+            <div class="loading blink">Loading profile data...</div>
+        </div>
+        <div class="action-btn-container">
+            <a href="{{ server_invite }}" class="btn-retro" id="join-btn" target="_blank">[ Join Server ]</a>
+        </div>
+    </section>
 
-        <section class="discord-card retro-border">
-            <h2 class="section-title">> User Identity</h2>
-            <div class="profile-content" id="discord-profile">
-                <div class="loading blink">Loading profile data...</div>
-            </div>
-            <div class="action-btn-container">
-                <a href="{{ server_invite }}" class="btn-retro" id="join-btn" target="_blank">[ Join Server ]</a>
-            </div>
-        </section>
-
-        <section class="skills-section retro-border">
-            <h2 class="section-title">> Capabilities List</h2>
-            <ul class="skills-list">
-                <li><span class="prompt">root@system:~#</span> Web Development</li>
-                <li><span class="prompt">root@system:~#</span> Bot Creation</li>
-                <li><span class="prompt">root@system:~#</span> Graphic Design</li>
-                <li><span class="prompt">root@system:~#</span> Server Administration</li>
-                <li><span class="prompt">root@system:~#</span> Discord Server Creation</li>
-            </ul>
-        </section>
-
-        <footer>
-            <p class="blink-slow">System halted. End of file.</p>
-        </footer>
-    </div>
-
-    <!-- Animation Toggle -->
-    <div class="anim-control">
-        <button id="anim-toggle" class="btn-retro anim-btn">
-            [ ANIMATIONS: ON ]
-        </button>
-    </div>
-
-    <!-- JS -->
-    <script src="{{ url_for('static', filename='js/matrix.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-
-</html>
+    <section class="skills-section retro-border">
+        <h2 class="section-title">> Capabilities List</h2>
+        <ul class="skills-list">
+            <li><span class="prompt">root@system:~#</span> Web Development</li>
+            <li><span class="prompt">root@system:~#</span> Bot Creation</li>
+            <li><span class="prompt">root@system:~#</span> Graphic Design</li>
+            <li><span class="prompt">root@system:~#</span> Server Administration</li>
+            <li><span class="prompt">root@system:~#</span> Discord Server Creation</li>
+        </ul>
+    </section>
+{% endblock %}

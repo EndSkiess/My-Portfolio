@@ -544,3 +544,32 @@ footer {
     opacity: 1 !important;
 }
 
+/* ADSENSE RETRO STYLING */
+.retro-ad-container {
+    margin-top: 50px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.ad-box {
+    border: 2px solid var(--text-primary);
+    padding: 20px;
+    background-color: rgba(0, 255, 0, 0.05);
+    box-shadow: 0 0 10px var(--text-primary), inset 0 0 10px var(--text-primary);
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.ad-label {
+    font-family: 'Press Start 2P', cursive, 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--text-primary);
+    letter-spacing: 2px;
+}

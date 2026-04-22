@@ -1,35 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        .coming-soon-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            text-align: center;
-            z-index: 10;
-            position: relative;
-        }
-    </style>
-</head>
-<body>
-    <canvas id="matrix-canvas" class="matrix-canvas"></canvas>
-    <div class="crt-overlay"></div>
-    <div class="scanlines"></div>
+{% extends "base.html" %}
 
+{% block title %}Coming Soon{% endblock %}
+
+{% block extra_head %}
+<style>
+    .coming-soon-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 60vh; /* Reduced to accommodate ad box */
+        width: 100%;
+        text-align: center;
+        position: relative;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
     <div class="coming-soon-container">
         <h1 class="glitch" data-text="Coming Soon">Coming Soon</h1>
         <p class="status-msg">Features are currently under development.</p>
         <a href="/" class="btn-retro" style="margin-top: 30px;">[ Return Home ]</a>
     </div>
-
-    <script src="{{ url_for('static', filename='js/matrix.js') }}"></script>
-</body>
-</html>
+{% endblock %}
